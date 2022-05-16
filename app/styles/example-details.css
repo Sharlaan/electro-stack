@@ -1,0 +1,16 @@
+/* Note: this stylesheet is scoped, with a prepended class .example-details >  */
+
+.example-details > header,
+.example-details > header > div,
+.example-details > header > aside {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Separating margin between edit/delete (form = delete button) */
+.example-details > header > aside > a ~ a,
+.example-details > header > aside > form ~ a,
+.example-details > header > aside > a + form {
+  margin-left: var(--global-spacing);
+}

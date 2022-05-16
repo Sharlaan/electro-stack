@@ -1,0 +1,32 @@
+.form-template {
+  display: grid;
+  grid-gap: var(--global-spacing);
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid;
+  border-radius: calc(var(--global-spacing) / 2);
+  padding: var(--global-spacing);
+  align-items: center;
+  width: var(--form-width);
+}
+
+.form-template > :is(input, select, textarea) {
+  grid-column: span 2;
+}
+
+.form-template > button {
+  grid-column: var(--span-entire-row);
+  margin-top: var(--global-spacing);
+}
+
+/* Redirecting link to login or register page */
+.form-template > a:last-of-type {
+  grid-column: var(--span-entire-row);
+  justify-content: center;
+}
+
+/* FIXME: too specific in a global form css, move it elsewhere */
+.form-template .array-property {
+  grid-column: var(--span-entire-row);
+  border-bottom: 1px solid var(--color-grey-200);
+  color: var(--color-grey-200);
+}

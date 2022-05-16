@@ -1,0 +1,30 @@
+main {
+  padding: 0;
+}
+
+main > img {
+  width: 100%;
+}
+
+main > header {
+  position: absolute;
+  top: calc(2 * var(--global-spacing));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: white;
+  font-size: 4.25vw;
+}
+
+.tech-stack {
+  display: flex;
+  gap: 30px;
+  margin-top: var(--global-spacing);
+}
+
+.tech-stack > a {
+  animation: heart-beat 1.5s infinite;
+}

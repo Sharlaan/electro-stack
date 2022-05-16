@@ -1,0 +1,131 @@
+:root {
+  --global-spacing: 20px;
+  --span-entire-row: 1 / -1; /* applies only to grid-items */
+}
+
+*:disabled {
+  cursor: not-allowed;
+}
+
+/* Global classes */
+a {
+  color: black;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+a:hover {
+  color: blue;
+  text-decoration: underline;
+}
+
+button,
+input,
+select,
+option,
+textarea {
+  font-family: Open Sans, Raleway, Roboto;
+  padding: 5px;
+}
+
+:is(button, select):hover:not(:disabled) {
+  cursor: pointer;
+}
+
+ul {
+  padding-left: 0;
+}
+
+hr {
+  margin-block: calc(var(--global-spacing) * 2);
+}
+
+.error {
+  color: red;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */ /* this can impact children widths */
+}
+
+.center-vertically {
+  align-items: center;
+}
+
+/* Global Layout */
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    'header header'
+    'nav main'
+    'nav footer';
+  font-family: Open Sans, Raleway, Roboto;
+}
+
+/* Main app header */
+body > header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  padding: var(--global-spacing);
+  border-bottom: 1px solid;
+}
+body > header > aside {
+  display: flex;
+  align-items: center;
+}
+body > header > aside > a ~ a,
+body > header > aside > form ~ a {
+  /* Separating margin between auth buttons */
+  margin-left: var(--global-spacing);
+}
+
+/* Main Footer */
+body > footer {
+  grid-area: footer;
+  text-align: center;
+  padding: var(--global-spacing);
+  border-top: 1px solid;
+}
+
+/* Navigation Menu */
+body > nav {
+  grid-area: nav;
+  border-right: 1px solid;
+}
+
+body > nav > a {
+  padding: 10px;
+}
+body > nav > a:hover {
+  background-color: var(--color-cyan-200);
+  color: black;
+  text-decoration: none;
+}
+body > nav > a.active {
+  background-color: var(--color-cyan-500);
+}
+
+main {
+  grid-area: main;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--global-spacing);
+  position: relative; /* for landingPage's header */
+}
+/* a <section className="current-page"/> can be used to scope inner styles */
+main > section {
+  width: 100%;
+}
+/* Page titles */
+main > :is(h1, h2, section > h2) {
+  margin-bottom: var(--global-spacing);
+}
