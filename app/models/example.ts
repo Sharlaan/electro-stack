@@ -12,6 +12,7 @@ export interface ExampleDB {
   type: ExampleEnum;
 }
 
-export interface Example extends ExampleDB {
+/** camelized version of database interface */
+export interface Example extends Omit<ExampleDB, 'array_Property'> {
   arrayProperty: string[];
 }

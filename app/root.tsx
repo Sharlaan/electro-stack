@@ -1,4 +1,5 @@
-import type { LinksFunction, MetaFunction } from '@remix-run/node';
+import type { LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import {
   Links,
   LiveReload,
@@ -7,17 +8,21 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
+  useLoaderData,
   useLocation,
 } from '@remix-run/react';
-import type { PropsWithChildren, ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 import { memo, useState } from 'react';
 import { useMount, useUpdateEffect } from 'react-use';
 import buttonStyles from '~/styles/buttons.css';
 import colors from '~/styles/colors-hsl.css';
 import formStyles from '~/styles/forms.css';
 import globalStyles from '~/styles/global.css';
+import headerMenuStyles from '~/styles/header-menu.css';
 import heartBeatAnimation from '~/styles/heart-beat.css';
 import { ErrorCaughtNotification, Footer, Header, SideMenu } from './components';
+import type { SessionUser } from './services/auth.service.server';
+import { getUserFromSession } from './services/auth.service.server';
 
 export const links: LinksFunction = () =>
   [
@@ -28,6 +33,7 @@ export const links: LinksFunction = () =>
     buttonStyles,
     formStyles,
     heartBeatAnimation,
+    headerMenuStyles,
   ].map((href) => ({ rel: 'stylesheet', href }));
 
 export const meta: MetaFunction = () => ({
@@ -35,12 +41,36 @@ export const meta: MetaFunction = () => ({
   viewport: 'width=device-width,initial-scale=1',
 });
 
+export interface LoaderData {
+  user: SessionUser | null;
+  ENV: {
+    SUPABASE_URL: string;
+    SUPABASE_KEY: string;
+  };
+}
+export const loader: LoaderFunction = async ({ request }) => {
+  const sessionUser = await getUserFromSession(request);
+
+  return json({
+    user: sessionUser,
+    ENV: {
+      SUPABASE_URL: process.env.SUPABASE_URL || '',
+      SUPABASE_KEY: process.env.SUPABASE_KEY || '',
+    },
+  });
+};
+
 export default function App() {
   return (
     <Document>
       <Layout>
         <Outlet />
       </Layout>
+      {/* <AuthProvider>
+        <Layout>
+          <Outlet />
+        </Layout>
+      </AuthProvider> */}
     </Document>
   );
 }
@@ -48,10 +78,9 @@ export default function App() {
 function Document({
   children,
   title = 'Remix / Supabase / Vercel - Template',
-}: {
-  children: ReactNode;
-  title?: string;
-}) {
+}: PropsWithChildren<{ title?: string }>) {
+  const { ENV } = useLoaderData<LoaderData>();
+
   return (
     <html lang="en">
       <head>
@@ -66,6 +95,11 @@ function Document({
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(ENV)}`,
+          }}
+        />
       </body>
     </html>
   );
@@ -97,10 +131,10 @@ export function ErrorBoundary({ error }: { error: Error }) {
   return (
     <Document title="Error!">
       <Layout>
-          <h1 className="error">An error occured</h1>
-          <p>{error.message}</p>
-          <hr />
-          <p>Hey, developer, you should replace this with what you want your users to see.</p>
+        <h1 className="error">An error occured</h1>
+        <p>{error.message}</p>
+        <hr />
+        <p>Hey, developer, you should replace this with what you want your users to see.</p>
       </Layout>
     </Document>
   );

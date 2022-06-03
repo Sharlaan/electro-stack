@@ -2,7 +2,7 @@ import type { ActionFunction } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { ErrorCaughtNotification, ExampleForm } from '~/components';
 import type { ExampleDB } from '~/models';
-import { supabase } from '~/services/supabase.server';
+import { supabaseServer } from '~/services/supabase/supabase.server';
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -16,7 +16,10 @@ export const action: ActionFunction = async ({ request }) => {
     array_property: formData.getAll('arrayProperty'),
   };
 
-  const { data, error } = await supabase.from<ExampleDB>('examples').insert(newExample).single();
+  const { data, error } = await supabaseServer
+    .from<ExampleDB>('examples')
+    .insert(newExample)
+    .single();
 
   if (error) {
     return redirect(`/examples`);

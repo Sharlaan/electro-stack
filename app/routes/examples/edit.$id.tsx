@@ -3,7 +3,7 @@ import { redirect } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { ErrorCaughtNotification, ExampleForm } from '~/components';
 import type { Example, ExampleDB } from '~/models/example';
-import { supabase } from '~/services/supabase.server';
+import { supabaseServer } from '~/services/supabase/supabase.server';
 import { notFoundResponse } from '~/utils/httpResponseErrors';
 import { snakeToCamelObject } from '~/utils/snakeCamelConverters';
 
@@ -22,13 +22,16 @@ export const action: ActionFunction = async ({ request, params }) => {
     array_property: formData.getAll('arrayProperty'),
   };
 
-  await supabase.from<ExampleDB>('examples').update(updates, { returning: 'minimal' }).eq('id', id);
+  await supabaseServer
+    .from<ExampleDB>('examples')
+    .update(updates, { returning: 'minimal' })
+    .eq('id', id);
 
   return redirect(`/examples/${id}`);
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const data = await supabase
+  const data = await supabaseServer
     .from<ExampleDB>('examples')
     .select('*')
     .eq('id', params.id as string)

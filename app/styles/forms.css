@@ -27,6 +27,6 @@
 /* FIXME: too specific in a global form css, move it elsewhere */
 .form-template .array-property {
   grid-column: var(--span-entire-row);
-  border-bottom: 1px solid var(--color-grey-200);
-  color: var(--color-grey-200);
+  border-bottom: 1px solid var(--color-grey-400);
+  color: var(--color-grey-400);
 }

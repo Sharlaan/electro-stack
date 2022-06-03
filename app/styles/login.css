@@ -1,0 +1,18 @@
+:root {
+  --form-width: 300px;
+}
+
+.responsive-stack {
+  display: grid;
+  grid-gap: calc(var(--global-spacing) * 4);
+  grid-template-columns: repeat(auto-fit, var(--form-width));
+  justify-content: center;
+}
+
+.social-login-buttons {
+  width: var(--form-width);
+}
+
+.social-login-buttons > button ~ button {
+  margin-top: var(--global-spacing);
+}

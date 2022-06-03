@@ -3,7 +3,7 @@ import { redirect } from '@remix-run/node';
 import { Link, useLoaderData, useTransition } from '@remix-run/react';
 import { DeleteButton, ErrorCaughtNotification } from '~/components';
 import type { Example, ExampleDB } from '~/models';
-import { supabase } from '~/services/supabase.server';
+import { supabaseServer } from '~/services/supabase/supabase.server';
 import styles from '~/styles/example-details.css';
 import { notFoundResponse } from '~/utils/httpResponseErrors';
 import { snakeToCamelObject } from '~/utils/snakeCamelConverters';
@@ -11,7 +11,7 @@ import { snakeToCamelObject } from '~/utils/snakeCamelConverters';
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }];
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const data = await supabase
+  const data = await supabaseServer
     .from<ExampleDB>('examples')
     .select('*')
     .eq('id', params.id as string)
@@ -29,7 +29,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData();
 
   if (formData.get('_method') === 'delete') {
-    await supabase
+    await supabaseServer
       .from<ExampleDB>('examples')
       .delete()
       .eq('id', params.id as string);

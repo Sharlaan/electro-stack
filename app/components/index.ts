@@ -1,6 +1,8 @@
+export { AuthSocialProviderButton } from './AuthSocialProviderButton';
 export { DeleteButton } from './DeleteButton';
 export { ErrorCaughtNotification } from './errorsBoundaries/ErrorCaughtNotification';
 export { ExampleForm } from './ExampleForm';
+export { HeaderMenu } from './HeaderMenu';
 export { InputField } from './InputField';
 export { Footer } from './layout/Footer';
 export { Header } from './layout/Header';

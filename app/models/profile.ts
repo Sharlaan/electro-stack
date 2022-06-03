@@ -4,7 +4,8 @@ export interface ProfileDB {
   last_name: string;
 }
 
-export interface Profile extends ProfileDB {
+/** camelized version of database interface */
+export interface Profile extends Omit<ProfileDB, 'first_name' | 'last_name'> {
   firstName: string;
   lastName: string;
 }

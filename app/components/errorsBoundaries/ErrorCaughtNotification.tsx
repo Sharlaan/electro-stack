@@ -12,6 +12,9 @@ export function ErrorCaughtNotification() {
 
   let redirectUrl = '/';
   if (status === 401) {
+    statusText ||= 'Unauthorized';
+    if (!data?.message) data = 'You must be authentified to access this page.';
+    redirectUrl = '/auth/login';
   } else if (status === 404) {
     statusText ||= 'Page not found';
   }
