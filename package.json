@@ -21,7 +21,7 @@
     "prepare": "husky install"
   },
   "engines": {
-    "node": "14"
+    "node": "16"
   },
   "dependencies": {
     "@remix-run/node": "latest",
