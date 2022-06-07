@@ -27,6 +27,7 @@ import { getUserFromSession } from './services/auth.service.server';
 export const links: LinksFunction = () =>
   [
     'https://unpkg.com/modern-css-reset@1.4.0/dist/reset.min.css',
+    'https://fonts.googleapis.com/css?family=Montserrat',
     'https://fonts.googleapis.com/css?family=Open+Sans',
     globalStyles,
     colors,

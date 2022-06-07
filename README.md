@@ -59,3 +59,5 @@ Open up [http://localhost:3000](http://localhost:3000) and you should be ready t
 [Remix Docs](https://remix.run/docs)
 
 [How to use translations in Remix](https://dev.to/adrai/how-to-internationalize-a-remix-application-2bep)
+
+[Designer Adam Argyle's excellent repo](https://github.com/argyleink/gui-challenges) containing a few CSS-only well-thought components.

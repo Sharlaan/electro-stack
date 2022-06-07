@@ -29,6 +29,9 @@ button:disabled {
   border: 1px solid;
   background-color: transparent;
 }
+button.button-outlined:hover:not(:disabled) {
+  border-color: var(--color-cyan-200);
+}
 
 .button-flat {
   border: none;

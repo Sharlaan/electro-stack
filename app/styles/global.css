@@ -1,4 +1,5 @@
 :root {
+  --font-family: Montserrat, Open Sans, Raleway, Roboto;
   --global-spacing: 20px;
   --span-entire-row: 1 / -1; /* applies only to grid-items */
 }
@@ -24,7 +25,7 @@ input,
 select,
 option,
 textarea {
-  font-family: Open Sans, Raleway, Roboto;
+  font-family: var(--font-family);
   padding: 5px;
 }
 
@@ -71,7 +72,8 @@ body {
     'header header'
     'nav main'
     'nav footer';
-  font-family: Open Sans, Raleway, Roboto;
+  font-family: var(--font-family);
+  letter-spacing: 0.04rem;
 }
 
 /* Main app header */

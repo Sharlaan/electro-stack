@@ -1,36 +1,35 @@
-/* The container <div> - needed to position the dropdown content */
+/* The container needed to position the dropdown content, <span> used for compatibility with ARIA */
 .header-menu {
+  /* --in-speed: 50ms; */
+  --out-speed: 300ms;
+
   position: relative;
-  display: inline-block;
 }
 
 /* Dropdown button, can be either an avatar or
 a rounded div containing first letter of user's name */
-.header-menu > :is(img, div):first-child {
-  background-color: var(--color-grey-700);
-  border-radius: 50%;
+.header-menu > button {
   width: calc(var(--global-spacing) * 2);
   height: calc(var(--global-spacing) * 2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: white;
   padding: calc(var(--global-spacing) / 2);
-  font-weight: bold;
-  cursor: pointer;
 }
 
 /* Dropdown Content (Hidden by Default) */
 .header-menu > ul {
-  display: none;
   position: absolute;
   right: 0;
-  background-color: #f9f9f9;
+  background-color: white;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
   z-index: 1;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity var(--out-speed) ease, transform var(--out-speed) ease;
+  pointer-events: none;
 }
 
-/* Links inside the dropdown */
+/* Menu links */
 .header-menu > ul :is(a, button) {
   color: black;
   padding: 12px 16px;
@@ -38,6 +37,7 @@ a rounded div containing first letter of user's name */
   display: flex;
   align-items: center;
 }
+
 /* Overrides global button styles for logout button */
 .header-menu > ul button {
   width: 100%;
@@ -48,21 +48,25 @@ a rounded div containing first letter of user's name */
   letter-spacing: normal;
 }
 
-/* Change color of dropdown links on hover */
-.header-menu > ul :is(a, button):hover {
-  background-color: #f1f1f1;
-}
-
-/* Show the dropdown menu on hover */
-.header-menu:hover ul {
-  display: block;
-}
+// FIXME: check :focus-visible on the button to handle the weird bg styling looking like it is pre-selected
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
-.header-menu:hover :is(img, div):first-child {
-  background-color: #3e8e41;
+.header-menu:is(:hover, :focus-within) button {
+  background-color: var(--color-cyan-500);
+}
+
+/* Show the dropdown menu on click via focus (or hover) */
+.header-menu:focus-within ul {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Change color of dropdown links on hover */
+.header-menu > ul :is(a, button):hover {
+  background-color: var(--color-cyan-200);
 }
 
 hr {
-  margin-block: 5px;
+  margin-block: 0;
 }
