@@ -22,8 +22,8 @@ export const action: ActionFunction = async ({ request }) => {
 
   if (!user || !access_token || !refresh_token) return unauthorizedResponse();
 
-  let session = await getSession(request.headers.get('Cookie'));
-  session = await updateAuthSession(session, user, access_token, refresh_token);
+  const session = await getSession(request.headers.get('Cookie'));
+  const updatedSession = await updateAuthSession(session, user, access_token, refresh_token);
 
   const redirectUrlByEvent: Record<AuthChangeEvent, string> = {
     SIGNED_IN: redirectTo,
@@ -36,7 +36,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   const redirectionHeaders = redirectUrlByEvent[event]
     ? {
-        headers: { 'Set-Cookie': await commitSession(session) },
+        headers: { 'Set-Cookie': await commitSession(updatedSession) },
       }
     : undefined;
 

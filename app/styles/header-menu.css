@@ -63,7 +63,7 @@ a rounded div containing first letter of user's name */
 }
 
 /* Change color of dropdown links on hover */
-.header-menu > ul :is(a, button):hover {
+.header-menu > ul :is(a, button):is(:hover, :focus) {
   background-color: var(--color-cyan-200);
 }
 

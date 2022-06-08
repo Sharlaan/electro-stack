@@ -1,0 +1,14 @@
+:root {
+  --form-width: 300px;
+}
+
+/* Single row layout */
+.responsive-stack {
+  flex-direction: row;
+  align-items: unset;
+}
+
+.responsive-stack > .separator {
+  flex-direction: column;
+  width: auto;
+}

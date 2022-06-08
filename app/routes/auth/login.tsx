@@ -11,10 +11,14 @@ import {
   updateAuthSession,
 } from '~/services/auth.service.server';
 import { supabaseServer } from '~/services/supabase/supabase.server';
+import largeStyles from '~/styles/login-large.css';
 import styles from '~/styles/login.css';
 import { badRequest, unauthorizedResponse } from '~/utils/httpResponseErrors';
 
-export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }];
+export const links: LinksFunction = () => [
+  { rel: 'stylesheet', href: styles },
+  { rel: 'stylesheet', href: largeStyles, media: '(min-width: 990px)' },
+];
 
 interface ActionData {
   user: User | null;
@@ -64,6 +68,12 @@ export default function LoginPage() {
           <AuthSocialProviderButton provider="github" returnUrl={returnUrl} />
           {/* <AuthSocialProviderButton provider="microsoft" returnUrl={returnUrl} /> */}
           {/* <AuthSocialProviderButton provider="gitlab" returnUrl={returnUrl} /> */}
+        </div>
+
+        <div className="separator">
+          <hr />
+          <span>OR</span>
+          <hr />
         </div>
 
         <div>
