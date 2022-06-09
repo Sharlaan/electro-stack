@@ -7,6 +7,9 @@
 *:disabled {
   cursor: not-allowed;
 }
+*:focus {
+  outline: none;
+}
 
 /* Global classes */
 a {
@@ -103,20 +106,20 @@ body > footer {
 }
 
 /* Navigation Menu */
-body > nav {
+body > aside {
   grid-area: nav;
   border-right: 1px solid;
 }
 
-body > nav > a {
-  padding: 10px;
+body > aside :is(h2, nav > a) {
+  padding: calc(var(--global-spacing) / 2);
 }
-body > nav > a:hover {
+body > aside > nav > a:hover {
   background-color: var(--color-cyan-200);
   color: black;
   text-decoration: none;
 }
-body > nav > a.active {
+body > aside > nav > a.active {
   background-color: var(--color-cyan-500);
 }
 
