@@ -87,7 +87,10 @@ export default function LoginPage() {
             <input type="hidden" name="returnUrl" value={returnUrl} />
 
             <Button>LOGIN</Button>
-            <NavLink to="/auth/register">Don't have an account ?</NavLink>
+
+            <aside>
+              Not registered yet ?<NavLink to="/auth/register">Create an Account</NavLink>
+            </aside>
           </Form>
           <small>Form State: {transition.state}</small>
           {response?.error ? <div className="error">{response.error}</div> : null}

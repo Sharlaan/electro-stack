@@ -8,7 +8,7 @@ export interface ExampleDB {
   id: number;
   name: string;
   property: string | null;
-  array_Property: string[];
+  array_property: string[];
   type: ExampleEnum;
 }
 

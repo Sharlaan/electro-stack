@@ -4,7 +4,7 @@ import { supabaseServer } from './supabase/supabase.server';
 
 export const getProfile = async (): Promise<Profile | null> => {
   const { data, error } = await supabaseServer.from<ProfileDB>('profiles').select().single();
-  if (error) return null;
+  if (error || !data) return null;
   return snakeToCamelObject(data) as unknown as Profile;
 };
 

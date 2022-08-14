@@ -27,13 +27,7 @@ export function AuthSocialProviderButton({ provider, returnUrl = '/profile', ...
   const FaIcon = FaIcons[`Fa${capitalize(provider)}`];
 
   return (
-    <Button
-      type="button"
-      variant="outlined"
-      onClick={onClick}
-      disabled={provider !== 'google'}
-      {...props}
-    >
+    <Button variant="outlined" onClick={onClick} disabled={provider !== 'google'} {...props}>
       <FaIcon size={provider === 'google' ? 18 : 24} />
       Continue with {capitalize(provider)}
     </Button>

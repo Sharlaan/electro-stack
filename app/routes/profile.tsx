@@ -15,8 +15,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const email = form.get('email');
-  const first_name = form.get('firstname') || undefined;
-  const last_name = form.get('lastname') || undefined;
+  const first_name = (form.get('firstname') || undefined) as string | undefined;
+  const last_name = (form.get('lastname') || undefined) as string | undefined;
 
   const session = await getSession(request.headers.get('Cookie'));
   const userId = session.get('userId');

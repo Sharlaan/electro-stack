@@ -2,11 +2,13 @@
   display: grid;
   grid-gap: var(--global-spacing);
   grid-template-columns: repeat(3, 1fr);
-  border: 1px solid;
-  border-radius: calc(var(--global-spacing) / 2);
+  border-radius: calc(var(--global-spacing));
+  box-shadow: 0 15px 20px 0 rgb(0 0 0 / 15%);
+  /* border: 1px solid; */
   padding: var(--global-spacing);
   align-items: center;
   width: var(--form-width);
+  background-color: white;
 }
 
 .form-template > :is(input, select, textarea) {
@@ -19,9 +21,11 @@
 }
 
 /* Redirecting link to login or register page */
-.form-template > a:last-of-type {
+.form-template > :is(a, aside):last-of-type {
   grid-column: var(--span-entire-row);
+  display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 /* FIXME: too specific in a global form css, move it elsewhere */

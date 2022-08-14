@@ -12,11 +12,6 @@ export default function LandingPage() {
         <div className="tech-stack">
           {[
             {
-              src: 'vercel-logotype.svg',
-              alt: 'Vercel',
-              href: 'https://vercel.io',
-            },
-            {
               src: 'https://avatars.githubusercontent.com/oa/1787661?s=120&u=62dead1c48aae82c79ba6bf1501bdec78750558b&v=4',
               alt: 'Supabase',
               href: 'https://supabase.io',
@@ -36,6 +31,11 @@ export default function LandingPage() {
               alt: 'TypeScript',
               href: 'https://typescriptlang.org',
             },
+            {
+              src: 'vercel-logotype.svg',
+              alt: 'Vercel',
+              href: 'https://vercel.io',
+            },
           ].map(({ alt, href, src }) => (
             <a key={href} href={href} rel="noreferrer" target="_blank">
               <img alt={alt} src={src} height={45} />
@@ -44,10 +44,7 @@ export default function LandingPage() {
         </div>
       </header>
 
-      <img
-        src="https://www.wallpaperup.com/uploads/wallpapers/2016/06/09/980773/a3a1170249387ca3657121777aba7041.jpg"
-        alt="Electro concert wallpaper"
-      ></img>
+      <img src="main-bg.webp" alt="Electro concert wallpaper"></img>
     </>
   );
 }

@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes } from 'react';
+import { useRef } from 'react';
 
 /** Corresponding styles are in styles/buttons.css */
 type Variant = 'filled' | 'outlined' | 'flat' /* | 'raised' */;
@@ -14,8 +15,10 @@ export function Button({
   type = 'submit',
   ...buttonProps
 }: ButtonProps) {
+  const ref = useRef<HTMLButtonElement | null>(null);
+  const buttonType = type || (ref.current?.closest('form') ? 'submit' : 'button');
   return (
-    <button type={type} className={`button-${variant}`} {...buttonProps}>
+    <button ref={ref} type={buttonType} className={`button-${variant}`} {...buttonProps}>
       {children}
     </button>
   );

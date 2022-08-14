@@ -54,6 +54,10 @@ hr {
   color: var(--color-green-500);
 }
 
+.spacer {
+  flex: 1;
+}
+
 .stack {
   display: flex;
   flex-direction: column;
@@ -66,17 +70,13 @@ hr {
 
 /* Global Layout */
 body {
-  min-height: 100vh;
-  margin: 0;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: auto 1fr auto;
-  grid-template-areas:
-    'header header'
-    'nav main'
-    'nav footer';
   font-family: var(--font-family);
   letter-spacing: 0.04rem;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizelegibility;
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
 }
 
 /* Main app header */
@@ -98,39 +98,59 @@ body > header > aside > form ~ a {
 }
 
 /* Main Footer */
-body > footer {
+body > main > footer {
   grid-area: footer;
   text-align: center;
   padding: var(--global-spacing);
-  border-top: 1px solid;
+  margin-top: var(--global-spacing);
+  margin-inline: calc(-1 * var(--global-spacing));
+  width: calc(100% + 2 * var(--global-spacing));
+  background-color: white;
+  /* border-top: 1px solid; */
+  box-shadow: 10px 0 5px -2px rgb(0 0 0 / 15%);
 }
 
 /* Navigation Menu */
 body > aside {
   grid-area: nav;
-  border-right: 1px solid;
+  display: flex;
+  flex-direction: column;
+  /* border-right: 1px solid; */
+  box-shadow: 10px 0 5px -2px rgb(0 0 0 / 15%);
 }
 
-body > aside :is(h2, nav > a) {
+body > aside > h2 > a {
+  justify-content: center;
+}
+body > aside > :is(h2, section, nav) :is(a, button) {
   padding: calc(var(--global-spacing) / 2);
 }
-body > aside > nav > a:hover {
+body > aside > :is(section, nav) > a:hover {
   background-color: var(--color-cyan-200);
   color: black;
   text-decoration: none;
 }
-body > aside > nav > a.active {
+body > aside > :is(section, nav) > a.active {
   background-color: var(--color-cyan-500);
+}
+/* Logout button-link */
+body > nav > section button {
+  border-radius: 0;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 main {
-  grid-area: main;
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--global-spacing);
+  padding-inline: var(--global-spacing);
+  padding-top: var(--global-spacing);
   position: relative; /* for landingPage's header */
+  background-color: var(--color-blueGrey);
+  height: 100vh;
+  overflow-y: auto;
 }
 /* a <section className="current-page"/> can be used to scope inner styles */
 main > section {

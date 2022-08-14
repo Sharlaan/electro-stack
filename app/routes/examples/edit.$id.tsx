@@ -2,7 +2,9 @@ import type { ActionFunction, LoaderFunction } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { ErrorCaughtNotification, ExampleForm } from '~/components';
+import type { ExampleType } from '~/models';
 import type { Example, ExampleDB } from '~/models/example';
+import { ExampleEnum } from '~/models/example';
 import { supabaseServer } from '~/services/supabase/supabase.server';
 import { notFoundResponse } from '~/utils/httpResponseErrors';
 import { snakeToCamelObject } from '~/utils/snakeCamelConverters';
@@ -11,15 +13,26 @@ export const action: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData();
   const id = params.id as string;
 
-  // TODO: Handle null cases against the db schema
+  // Handle null cases against the db schema
+  const name = formData.get('name');
+  if (typeof name !== 'string') throw Error('"Input "name" is not a string');
+
+  const type = formData.get('type') as ExampleType;
+  if (!type || !Object.values(ExampleEnum).includes(type))
+    throw Error('"Input "type" is not a string');
+
   const property = formData.get('property');
   if (typeof property !== 'string') throw Error('"Input "property" is not a string');
 
-  const updates: Example = {
-    name: formData.get('name'),
-    type: formData.get('type'),
+  const arrayProperty = formData.getAll('arrayProperty');
+  if (!Array.isArray(arrayProperty) || arrayProperty.some((prop) => typeof prop !== 'string'))
+    throw Error('"Input "arrayProperty" is not an array of strings');
+
+  const updates: Omit<ExampleDB, 'id'> = {
+    name,
+    type,
     property,
-    array_property: formData.getAll('arrayProperty'),
+    array_property: arrayProperty as string[],
   };
 
   await supabaseServer

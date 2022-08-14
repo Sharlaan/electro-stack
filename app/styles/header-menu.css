@@ -48,14 +48,13 @@ a rounded div containing first letter of user's name */
   letter-spacing: normal;
 }
 
-// FIXME: check :focus-visible on the button to handle the weird bg styling looking like it is pre-selected
-
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .header-menu:is(:hover, :focus-within) button {
   background-color: var(--color-cyan-500);
 }
 
-/* Show the dropdown menu on click via focus (or hover) */
+/* Show the dropdown menu on click: when button gets focus from click,
+the rule ':focus-within' allows to select the ul menu and style it */
 .header-menu:focus-within ul {
   pointer-events: auto;
   opacity: 1;
@@ -65,6 +64,7 @@ a rounded div containing first letter of user's name */
 /* Change color of dropdown links on hover */
 .header-menu > ul :is(a, button):is(:hover, :focus) {
   background-color: var(--color-cyan-200);
+  outline: none;
 }
 
 hr {

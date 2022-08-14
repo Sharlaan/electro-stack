@@ -1,5 +1,5 @@
 :root {
-  --form-width: 300px;
+  --form-width: 400px;
 }
 
 /* Single column layout */
@@ -36,3 +36,5 @@
 .social-login-buttons > button ~ button {
   margin-top: var(--global-spacing);
 }
+
+/* Redirection link to login or register page */

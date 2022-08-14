@@ -2,7 +2,7 @@ import { useCatch, useNavigate } from '@remix-run/react';
 import { useUpdateEffect } from 'react-use';
 import { useCountDown } from '~/utils/useCountDown';
 
-const DURATION = 4; // seconds
+const DURATION = 3; // seconds
 
 /** Use in CatchBoundary for client-side errors */
 export function ErrorCaughtNotification() {

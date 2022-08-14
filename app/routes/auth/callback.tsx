@@ -7,6 +7,11 @@ import { commitSession, getSession, updateAuthSession } from '~/services/auth.se
 import { supabaseClient } from '~/services/supabase/supabase.client';
 import { unauthorizedResponse } from '~/utils/httpResponseErrors';
 
+// export const loader: LoaderFunction = async ({ request }) => {
+//   console.log('REQUEST', request);
+//   return redirect('/auth/login');
+// };
+
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const formDataSession = formData.get('session') as string | null;
@@ -52,6 +57,12 @@ export const action: ActionFunction = async ({ request }) => {
 export default function AuthCallback() {
   const fetcher = useFetcher();
   const [searchParams] = useSearchParams();
+
+  const authError = searchParams.get('error_description');
+  if (authError) {
+    console.error(authError);
+    // throw new Error(authError);
+  }
 
   useMount(() => {
     const { data: authListener } = supabaseClient.auth.onAuthStateChange((event, session) => {

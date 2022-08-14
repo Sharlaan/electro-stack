@@ -20,7 +20,7 @@ import formStyles from '~/styles/forms.css';
 import globalStyles from '~/styles/global.css';
 import headerMenuStyles from '~/styles/header-menu.css';
 import heartBeatAnimation from '~/styles/heart-beat.css';
-import { ErrorCaughtNotification, Footer, Header, SideMenu } from './components';
+import { ErrorCaughtNotification, Footer, SideMenu } from './components';
 import type { SessionUser } from './services/auth.service.server';
 import { getUserFromSession } from './services/auth.service.server';
 
@@ -109,10 +109,14 @@ function Document({
 function Layout({ children }: PropsWithChildren<{}>) {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <SideMenu />
-      <main>{children}</main>
-      <Footer />
+      <main>
+        {children}
+        <div className="spacer"></div>
+        <Footer />
+      </main>
+      {/* <Footer /> */}
     </>
   );
 }

@@ -27,7 +27,7 @@ button:disabled {
 
 .button-outlined {
   border: 1px solid;
-  background-color: transparent;
+  background-color: white;
 }
 button.button-outlined:hover:not(:disabled) {
   border-color: var(--color-cyan-200);

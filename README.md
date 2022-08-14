@@ -42,6 +42,8 @@ Afterwards, start the Remix development server like so:
 npm run dev
 ```
 
+Note: you can run this script in VSCode's integrated "Javascript Debug terminal" to be able to use breakpoints ;)
+
 Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!
 
 ## Resources

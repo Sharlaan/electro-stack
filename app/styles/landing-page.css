@@ -2,8 +2,8 @@ main {
   padding: 0;
 }
 
-main > img {
-  width: 100%;
+main > :is(img, footer) {
+  width: 100% !important;
 }
 
 main > header {

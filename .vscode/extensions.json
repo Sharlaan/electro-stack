@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "usernamehw.errorlens",
+    "eamodio.gitlens",
+    "rvest.vs-code-prettier-eslint",
+    "rbbit.typescript-hero",
+    "amimaro.remix-run-snippets",
+    "fivepointseven.node-version",
+    "pflannery.vscode-versionlens",
+    "mhutchie.git-graph",
+    "oderwat.indent-rainbow",
+    "kisstkondoros.vscode-gutter-preview",
+    "wix.vscode-import-cost",
+    "sburg.vscode-javascript-booster",
+    "mariusalchimavicius.json-to-ts",
+    "johnpapa.vscode-peacock"
+  ]
+}
