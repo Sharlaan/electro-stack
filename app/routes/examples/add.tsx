@@ -1,45 +1,51 @@
 import type { ActionFunction } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
+
 import { ErrorCaughtNotification, ExampleForm } from '~/components';
-import type { ExampleDB, ExampleType } from '~/models';
-import { ExampleEnum } from '~/models/example';
-import { supabaseServer } from '~/services/supabase/supabase.server';
+import type { Database } from '~/database.types';
+import type { ExampleTypes } from '~/models';
+import { createSupabaseServerClient } from '~/services/supabase/supabase.server';
 
 export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
+  const { arrayProperty, name, property, type } = Object.fromEntries(await request.formData());
 
   // Handle null cases against the db schema
-  const name = formData.get('name');
   if (typeof name !== 'string') throw Error('"Input "name" is not a string');
 
-  const type = formData.get('type') as ExampleType;
-  if (!type || !Object.values(ExampleEnum).includes(type))
-    throw Error('"Input "type" is not a string');
+  function checkType(value: FormDataEntryValue): value is ExampleTypes {
+    return typeof type === 'string' && ['Type A', 'Type B', 'Type C'].includes(type);
+  }
+  if (!checkType(type)) throw Error('"Input "type" is not a string');
 
-  const property = formData.get('property');
   if (typeof property !== 'string') throw Error('"Input "property" is not a string');
 
-  const arrayProperty = formData.getAll('arrayProperty');
-  if (!Array.isArray(arrayProperty) || arrayProperty.some((prop) => typeof prop !== 'string'))
+  // @ts-ignore
+  function checkArrayproperty(value: FormDataEntryValue): value is string[] {
+    return Array.isArray(value) && value.every((prop) => typeof prop === 'string');
+  }
+  if (!checkArrayproperty(arrayProperty))
     throw Error('"Input "arrayProperty" is not an array of strings');
 
-  const newExample: Omit<ExampleDB, 'id'> = {
+  const supabaseServerClient = createSupabaseServerClient(request);
+
+  const newExample: Database['public']['Tables']['examples']['Insert'] = {
     name,
     type,
     property,
     array_property: arrayProperty as string[],
   };
 
-  const { data, error } = await supabaseServer
-    .from<ExampleDB>('examples')
+  const { data, error } = await supabaseServerClient
+    .from('examples')
     .insert(newExample)
+    .select('id')
     .single();
 
   if (error) {
     return redirect(`/examples`);
   }
 
-  return redirect(`/examples/${data?.id}`);
+  return redirect(`/examples/${data.id}`);
 };
 
 export default function AddExample() {

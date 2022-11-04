@@ -1,5 +1,5 @@
 {
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["remix.env.d.ts", "app/**/*.ts", "app/**/*.tsx"],
   "compilerOptions": {
     "allowJs": true,
     "baseUrl": ".",
@@ -8,6 +8,7 @@
     "isolatedModules": true,
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "jsx": "react-jsx",
+    "module": "ES2022",
     "moduleResolution": "node",
     "noEmit": true,
     "resolveJsonModule": true,

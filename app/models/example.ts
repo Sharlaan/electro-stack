@@ -1,15 +1,13 @@
-export enum ExampleEnum {
-  TYPE_A = 'Type A',
-  TYPE_B = 'Type B',
-  TYPE_C = 'Type C',
-}
+import type { Database } from '~/database.types';
+
+export type ExampleTypes = Database['public']['Enums']['example_type'];
 
 export interface ExampleDB {
   id: number;
   name: string;
   property: string | null;
   array_property: string[];
-  type: ExampleEnum;
+  type: ExampleTypes;
 }
 
 /** camelized version of database interface */

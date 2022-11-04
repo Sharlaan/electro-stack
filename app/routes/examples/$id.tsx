@@ -2,19 +2,20 @@ import type { ActionFunction, LinksFunction, LoaderFunction } from '@remix-run/n
 import { redirect } from '@remix-run/node';
 import { Link, useLoaderData, useTransition } from '@remix-run/react';
 import { DeleteButton, ErrorCaughtNotification } from '~/components';
-import type { Example, ExampleDB } from '~/models';
-import { supabaseServer } from '~/services/supabase/supabase.server';
+import type { Example } from '~/models';
+import { createSupabaseServerClient } from '~/services/supabase/supabase.server';
 import styles from '~/styles/example-details.css';
 import { notFoundResponse } from '~/utils/httpResponseErrors';
 import { snakeToCamelObject } from '~/utils/snakeCamelConverters';
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }];
 
-export const loader: LoaderFunction = async ({ params }) => {
-  const data = await supabaseServer
-    .from<ExampleDB>('examples')
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const supabaseServerClient = createSupabaseServerClient(request);
+  const data = await supabaseServerClient
+    .from('examples')
     .select('*')
-    .eq('id', params.id as string)
+    .eq('id', params.id)
     .single()
     .then(({ data }) => (data ? snakeToCamelObject(data) : null));
 
@@ -27,12 +28,10 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export const action: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData();
+  const supabaseServerClient = createSupabaseServerClient(request);
 
   if (formData.get('_method') === 'delete') {
-    await supabaseServer
-      .from<ExampleDB>('examples')
-      .delete()
-      .eq('id', params.id as string);
+    await supabaseServerClient.from('examples').delete().eq('id', params.id);
 
     return redirect('/examples');
   }

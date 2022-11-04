@@ -1,6 +1,6 @@
 import { Form, useTransition } from '@remix-run/react';
+
 import type { Example } from '~/models';
-import { ExampleType } from '~/models';
 import { Button } from './Button';
 
 export function ExampleForm({ example, title }: Partial<{ example: Example; title: string }>) {
@@ -22,10 +22,10 @@ export function ExampleForm({ example, title }: Partial<{ example: Example; titl
         />
 
         <label htmlFor="type">Type</label>
-        <select id="type" name="type" defaultValue={example?.type ?? ExampleType.TYPE_A} required>
-          <option value={ExampleType.TYPE_A}>Type A</option>
-          <option value={ExampleType.TYPE_B}>Type B</option>
-          <option value={ExampleType.TYPE_C}>Type C</option>
+        <select id="type" name="type" defaultValue={example?.type ?? 'Type A'} required>
+          <option value="Type A">Type A</option>
+          <option value="Type B">Type B</option>
+          <option value="Type C">Type C</option>
         </select>
 
         <label htmlFor="property">Some Property</label>

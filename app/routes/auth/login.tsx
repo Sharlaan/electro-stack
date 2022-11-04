@@ -1,19 +1,14 @@
 import type { ActionFunction, LinksFunction } from '@remix-run/node';
-import { redirect } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { Form, NavLink, useActionData, useSearchParams, useTransition } from '@remix-run/react';
-import type { User } from '@supabase/supabase-js';
+import type { User } from '@supabase/auth-helpers-remix';
+
 import { AuthSocialProviderButton } from '~/components';
 import { Button } from '~/components/Button';
-import {
-  commitSession,
-  getSession,
-  login,
-  updateAuthSession,
-} from '~/services/auth.service.server';
-import { supabaseServer } from '~/services/supabase/supabase.server';
+import { createSupabaseServerClient } from '~/services/supabase/supabase.server';
 import largeStyles from '~/styles/login-large.css';
 import styles from '~/styles/login.css';
-import { badRequest, unauthorizedResponse } from '~/utils/httpResponseErrors';
+import { badRequest } from '~/utils/httpResponseErrors';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: styles },
@@ -26,28 +21,23 @@ interface ActionData {
 }
 
 export const action: ActionFunction = async ({ request }) => {
-  const form = await request.formData();
-  const email = form.get('email');
-  const password = form.get('password');
-  const returnUrl = form.get('returnUrl');
+  const { email, password } = Object.fromEntries(await request.formData());
 
   if (!email || !password) {
     return badRequest({ user: null, error: 'Email and Password are required' });
   }
+  if (email instanceof File || password instanceof File) {
+    return badRequest({ user: null, error: 'Email and Password must be string, not files' });
+  }
 
-  const { user, accessToken, refreshToken, error } = await login({ email, password });
+  const response = new Response();
+  const supabaseServerClient = createSupabaseServerClient(request, response);
 
-  if (error || !user || !accessToken || !refreshToken)
-    return unauthorizedResponse(error || undefined);
+  const { data, error } = await supabaseServerClient.auth.signInWithPassword({ email, password });
 
-  supabaseServer.auth.setAuth(accessToken);
-  let session = await getSession(request.headers.get('Cookie'));
-  session = await updateAuthSession(session, user, accessToken, refreshToken);
-  return redirect(returnUrl || '/', {
-    headers: {
-      'Set-Cookie': await commitSession(session),
-    },
-  });
+  // in order for the set-cookie header to be set,
+  // headers must be returned as part of the loader response
+  return json({ data, error }, { headers: response.headers });
 };
 
 export default function LoginPage() {
@@ -61,13 +51,25 @@ export default function LoginPage() {
       <h2>Login Page</h2>
 
       <section className="responsive-stack">
+        {/* {supabaseBrowserClient && !session && (
+          <Auth
+            redirectTo="http://localhost:3004"
+            appearance={{ theme: ThemeSupa }}
+            supabaseClient={supabaseBrowserClient}
+            providers={['google', 'github']}
+            socialLayout="horizontal"
+          />
+        )}
+
+        <hr /> */}
+
         <div className="social-login-buttons stack">
-          <AuthSocialProviderButton provider="google" returnUrl={returnUrl} />
-          <AuthSocialProviderButton provider="apple" returnUrl={returnUrl} />
-          <AuthSocialProviderButton provider="linkedin" returnUrl={returnUrl} />
-          <AuthSocialProviderButton provider="github" returnUrl={returnUrl} />
-          {/* <AuthSocialProviderButton provider="microsoft" returnUrl={returnUrl} /> */}
-          {/* <AuthSocialProviderButton provider="gitlab" returnUrl={returnUrl} /> */}
+          <AuthSocialProviderButton provider="google" />
+          <AuthSocialProviderButton provider="apple" />
+          <AuthSocialProviderButton provider="linkedin" />
+          <AuthSocialProviderButton provider="github" />
+          {/* <AuthSocialProviderButton provider="microsoft" /> */}
+          <AuthSocialProviderButton provider="gitlab" />
         </div>
 
         <div className="separator">

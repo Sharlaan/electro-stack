@@ -6,11 +6,13 @@ type Variant = 'filled' | 'outlined' | 'flat' /* | 'raised' */;
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   iconPosition?: 'left' | 'right';
+  loading?: boolean;
   variant?: Variant;
 }
 
 export function Button({
   children,
+  loading = false,
   variant = 'filled',
   type = 'submit',
   ...buttonProps
@@ -18,7 +20,13 @@ export function Button({
   const ref = useRef<HTMLButtonElement | null>(null);
   const buttonType = type || (ref.current?.closest('form') ? 'submit' : 'button');
   return (
-    <button ref={ref} type={buttonType} className={`button-${variant}`} {...buttonProps}>
+    <button
+      ref={ref}
+      type={buttonType}
+      disabled={loading}
+      className={`button-${variant}`}
+      {...buttonProps}
+    >
       {children}
     </button>
   );

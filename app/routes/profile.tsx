@@ -1,11 +1,11 @@
 import type { ActionFunction, LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Form, useActionData, useTransition } from '@remix-run/react';
+
 import { Button } from '~/components/Button';
-import type { ProfileDB } from '~/models';
-import { getSession, isAuthenticated } from '~/services/auth.service.server';
-import { supabaseServer } from '~/services/supabase/supabase.server';
-import { unauthorizedResponse } from '~/utils/httpResponseErrors';
+import { isAuthenticated } from '~/services/auth.service.server';
+import { createSupabaseServerClient } from '~/services/supabase/supabase.server';
+import { badRequest, unauthorizedResponse } from '~/utils/httpResponseErrors';
 
 export const loader: LoaderFunction = async ({ request }) => {
   if (!(await isAuthenticated(request))) throw unauthorizedResponse();
@@ -13,18 +13,29 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  const form = await request.formData();
-  const email = form.get('email');
-  const first_name = (form.get('firstname') || undefined) as string | undefined;
-  const last_name = (form.get('lastname') || undefined) as string | undefined;
+  const { firstName: first_name, lastName: last_name } = Object.fromEntries(
+    await request.formData()
+  );
 
-  const session = await getSession(request.headers.get('Cookie'));
-  const userId = session.get('userId');
+  const response = new Response();
+  const supabaseServerClient = createSupabaseServerClient(request, response);
+
+  const {
+    data: { session },
+  } = await supabaseServerClient.auth.getSession();
+  const user = session?.user;
+
+  if (!user?.id) {
+    return badRequest({ user: null, error: 'User ID is required' });
+  }
+  if (first_name instanceof File || last_name instanceof File) {
+    return badRequest({ user: null, error: 'First and last names must be string, not files' });
+  }
 
   // create the user in profiles table
-  const { error: updateError } = await supabaseServer
-    .from<ProfileDB>('profiles')
-    .update({ id: userId, first_name, last_name });
+  const { error: updateError } = await supabaseServerClient
+    .from('profiles')
+    .update({ id: user.id, first_name, last_name });
 
   return updateError ? { error: updateError } : json({ success: 'Profile updated successfully !' });
 };

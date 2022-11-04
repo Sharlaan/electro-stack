@@ -1,11 +1,13 @@
 import type { LoaderFunction } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
-import type { Example, ExampleDB } from '~/models/example';
-import { supabaseServer } from '~/services/supabase/supabase.server';
 
-export const loader: LoaderFunction = async () => {
-  const { data: examples } = await supabaseServer
-    .from<ExampleDB>('examples')
+import type { Example } from '~/models/example';
+import { createSupabaseServerClient } from '~/services/supabase/supabase.server';
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const supabaseServerClient = createSupabaseServerClient(request);
+  const { data: examples } = await supabaseServerClient
+    .from('examples')
     .select('id, name')
     .order('id');
 

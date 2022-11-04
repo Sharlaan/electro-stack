@@ -1,57 +1,63 @@
 import type { ActionFunction, LinksFunction } from '@remix-run/node';
-import { redirect } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { Form, NavLink, useActionData, useTransition } from '@remix-run/react';
-import type { ApiError, User } from '@supabase/supabase-js';
+import type { AuthError, User } from '@supabase/supabase-js';
+
 import { Button } from '~/components/Button';
-import type { ProfileDB } from '~/models';
-import { commitSession, getSession } from '~/services/auth.service.server';
-import { supabaseServer } from '~/services/supabase/supabase.server';
+import { createSupabaseServerClient } from '~/services/supabase/supabase.server';
 import styles from '~/styles/login.css';
+import { badRequest } from '~/utils/httpResponseErrors';
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }];
 
 interface ActionData {
   user: User | null;
-  error: ApiError | null; // SignUpError or ProfileError
+  error: AuthError | null; // SignUpError or ProfileError
 }
 
 export const action: ActionFunction = async ({ request }) => {
-  const form = await request.formData();
-  const email = form.get('email');
-  const password = form.get('password');
-  const first_name = form.get('firstname');
-  const last_name = form.get('lastname');
-
-  await supabaseServer.auth.signOut();
-
   const {
-    session: sessionData,
-    user,
-    error,
-  } = await supabaseServer.auth.signUp({ email, password });
+    email,
+    password,
+    firstname: first_name,
+    lastname: last_name,
+  } = Object.fromEntries(await request.formData());
+  const response = new Response();
+  const supabaseServerClient = createSupabaseServerClient(request, response);
 
-  if (!error && user) {
-    const { data: updatedUsers, error: profileError } = await supabaseServer
-      .from<ProfileDB>('profiles')
-      .insert({ id: user?.id, first_name, last_name });
+  const { error: logoutError } = await supabaseServerClient.auth.signOut();
+  if (logoutError) throw logoutError;
 
-    console.log({ updatedUsers, profileError });
-
-    if (profileError) return { user: updatedUsers?.[0], error: profileError };
-
-    const session = await getSession(request.headers.get('Cookie'));
-    session.set('access_token', sessionData?.access_token);
-    session.set('userId', user.id);
-    session.set('username', updatedUsers[0].first_name);
-
-    return redirect('/', {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    });
+  if (!email || !password) {
+    return badRequest({ user: null, error: 'Email and Password are required' });
+  }
+  if (
+    email instanceof File ||
+    password instanceof File ||
+    first_name instanceof File ||
+    last_name instanceof File
+  ) {
+    return badRequest({ user: null, error: 'Email and Password must be string, not files' });
   }
 
-  return { user, error };
+  const user_metadata =
+    !first_name && !last_name
+      ? undefined
+      : {
+          ...(first_name && { first_name }),
+          ...(last_name && { last_name }),
+        };
+
+  const { data /*: { user, session: sessionData }*/, error } =
+    await supabaseServerClient.auth.signUp({
+      email,
+      password,
+      options: { data: user_metadata },
+    });
+
+  // in order for the set-cookie header to be set,
+  // headers must be returned as part of the loader response
+  return json({ data, error }, { headers: response.headers });
 };
 
 export default function RegisterPage() {

@@ -23,31 +23,31 @@
     "node": "16"
   },
   "volta": {
-    "node": "16.17.0"
+    "node": "16.18.0"
   },
   "dependencies": {
-    "@remix-run/node": "^1.3.3",
-    "@remix-run/react": "^1.3.3",
-    "@remix-run/vercel": "^1.3.3",
-    "@supabase/supabase-js": "^1",
-    "docx": "^7",
+    "@remix-run/node": "^1.7.5",
+    "@remix-run/react": "^1.7.5",
+    "@remix-run/vercel": "^1.7.5",
+    "@supabase/auth-helpers-remix": "^0.1.3",
+    "docx": "^7.6.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^4",
+    "react-icons": "^4.6.0",
     "react-use": "^17"
   },
   "devDependencies": {
-    "@remix-run/dev": "^1.3.3",
-    "@remix-run/eslint-config": "^1.3.3",
-    "@remix-run/serve": "^1.3.3",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
+    "@remix-run/dev": "^1.7.5",
+    "@remix-run/eslint-config": "^1.7.5",
+    "@remix-run/serve": "^1.7.5",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.8",
+    "eslint": "^8.26.0",
     "eslint-config-prettier": "^8",
     "husky": "^8",
     "lint-staged": "^13",
     "prettier": "^2",
-    "typescript": "^4"
+    "typescript": "^4.8.4"
   },
   "sideEffects": false,
   "husky": {

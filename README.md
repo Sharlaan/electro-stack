@@ -13,7 +13,7 @@ You will need 3 accounts:
 2. Vercel for deployments
 3. Supabase for Auth & Database management
 
-How to setup Supabase : refer to this [README](https://github.com/one-aalam/remix-starter-kit#how-to-setup-supabase-for-remix-starter-kit).
+How to setup Supabase : refer to this [README](https://supabase.com/docs/guides/auth/auth-helpers/remix).
 
 ## Deployment
 
@@ -52,7 +52,9 @@ Open up [http://localhost:3000](http://localhost:3000) and you should be ready t
 
 [Bare minimum authentication with Remix (including Social Providers)](https://github.com/arpitdalal/remix-supabase-auth)
 
-[Remix and Database integration @ Supabase](https://dev.to/codegino/remix-and-supabase-integration-cci#preface)
+[Remix and Database integration with Supabase](https://dev.to/codegino/remix-and-supabase-integration-cci#preface)
+
+[Remix and Database integration with Supabase V2](https://github.com/supabase/auth-helpers/blob/main/examples/remix)
 
 [Supabase Project Dashboard](https://app.supabase.io/project) (append it with your project's ID)
 

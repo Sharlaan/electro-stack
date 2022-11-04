@@ -110,7 +110,7 @@ body > main > footer {
   box-shadow: 10px 0 5px -2px rgb(0 0 0 / 15%);
 }
 
-/* Navigation Menu */
+/* Navigation SideMenu */
 body > aside {
   grid-area: nav;
   display: flex;
@@ -122,22 +122,23 @@ body > aside {
 body > aside > h2 > a {
   justify-content: center;
 }
-body > aside > :is(h2, section, nav) :is(a, button) {
+body > aside > :is(h2, nav) :is(a, button) {
   padding: calc(var(--global-spacing) / 2);
 }
-body > aside > :is(section, nav) > a:hover {
+body > aside > nav > a:hover {
   background-color: var(--color-cyan-200);
   color: black;
   text-decoration: none;
 }
-body > aside > :is(section, nav) > a.active {
+body > aside > nav > a.active {
   background-color: var(--color-cyan-500);
 }
 /* Logout button-link */
-body > nav > section button {
+body > aside > nav > button {
   border-radius: 0;
   justify-content: flex-start;
   width: 100%;
+  font-weight: normal;
 }
 
 main {
