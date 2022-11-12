@@ -1,23 +1,23 @@
 .form-template {
   display: grid;
-  grid-gap: var(--global-spacing);
-  grid-template-columns: repeat(3, 1fr);
+  gap: var(--global-spacing);
+  grid-template-columns: auto 1fr;
   border-radius: calc(var(--global-spacing));
   box-shadow: 0 15px 20px 0 rgb(0 0 0 / 15%);
   /* border: 1px solid; */
   padding: var(--global-spacing);
   align-items: center;
-  width: var(--form-width);
   background-color: white;
 }
 
-.form-template > :is(input, select, textarea) {
-  grid-column: span 2;
+.form-template > :is(input, textarea) {
+  field-sizing: content;
 }
 
 .form-template > button {
   grid-column: var(--span-entire-row);
   margin-top: var(--global-spacing);
+  justify-content: center;
 }
 
 /* Redirecting link to login or register page */
@@ -26,6 +26,7 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  column-gap: var(--global-spacing);
 }
 
 /* FIXME: too specific in a global form css, move it elsewhere */

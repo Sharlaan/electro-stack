@@ -1,40 +1,36 @@
-:root {
-  --form-width: 400px;
-}
-
 /* Single column layout */
 .responsive-stack {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: calc(var(--global-spacing) * 2);
   justify-content: center;
   align-items: center;
-}
 
-.responsive-stack > .separator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: calc(var(--form-width));
-}
+  & > .separator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.responsive-stack > .separator hr {
-  flex: 1;
-  background-color: black;
-}
+  & > .separator hr {
+    flex: 1;
+    background-color: black;
+  }
 
-.responsive-stack > .separator span {
-  padding: 10px 20px;
-  border: 1px solid;
-  border-radius: 100% 50%;
+  & > .separator span {
+    padding: 10px 20px;
+    border: 1px solid;
+    border-radius: 100% 50%;
+  }
 }
 
 .social-login-buttons {
-  width: var(--form-width);
-}
+  display: grid;
+  justify-content: center;
+  gap: var(--global-spacing);
 
-.social-login-buttons > button ~ button {
-  margin-top: var(--global-spacing);
+  & > button {
+    justify-content: unset;
+  }
 }
 
 /* Redirection link to login or register page */

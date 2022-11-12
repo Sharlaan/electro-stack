@@ -1,14 +1,9 @@
-:root {
-  --form-width: 300px;
-}
-
 /* Single row layout */
 .responsive-stack {
-  flex-direction: row;
+  grid-auto-flow: column;
   align-items: unset;
+  & > .separator {
+    flex-direction: column;
+  }
 }
 
-.responsive-stack > .separator {
-  flex-direction: column;
-  width: auto;
-}
